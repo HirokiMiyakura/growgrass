@@ -1,0 +1,48 @@
+<ifModule mod_headers.c>
+Header Set Vary User-Agent
+</ifModule>
+
+RewriteEngine Off
+RewriteEngine On
+<ifModule mod_expires.c>
+ExpiresActive On
+ExpiresByType text/css "access plus 7 days"
+ExpiresByType image/bmp "access plus 10 days"
+ExpiresByType image/gif "access plus 10 days"
+ExpiresByType image/jpg "access plus 10 days"
+ExpiresByType image/jpeg "access plus 10 days"
+ExpiresByType image/png "access plus 10 days"
+ExpiresByType text/js "access plus 10 days"
+ExpiresByType text/javascript "access plus 10 days"
+ExpiresByType text/x-javascript "access plus 10 days"
+ExpiresByType application/javascript "access plus 10 days"
+ExpiresByType application/x-javascript "access plus 10 days"
+</ifModule>
+
+RewriteCond %{HTTP_USER_AGENT} (iPhone|iPod|Android.*Mobile|Windows.*Phone|BlackBerry)
+RewriteRule ^$ iphone/redirect.php?f=index\.html [L]
+RewriteCond %{HTTP_USER_AGENT} (iPhone|iPod|Android.*Mobile|Windows.*Phone|BlackBerry)
+RewriteRule ^(.*)\.html iphone/redirect.php?f=$1\.html [L]
+RewriteCond %{HTTP_USER_AGENT} (iPhone|iPod|Android.*Mobile|Windows.*Phone|BlackBerry)
+RewriteRule ^(.*)\.css iphone/$1.css [L]
+RewriteCond %{HTTP_USER_AGENT} (iPhone|iPod|Android.*Mobile|Windows.*Phone|BlackBerry)
+RewriteRule ^img/(.*) iphone/img/$1 [L]
+RewriteCond %{HTTP_USER_AGENT} (iPhone|iPod|Android.*Mobile|Windows.*Phone|BlackBerry)
+RewriteRule ^js/(.*) iphone/js/$1 [L]
+RewriteCond %{HTTP_USER_AGENT} (iPhone|iPod|Android.*Mobile|Windows.*Phone|BlackBerry)
+RewriteRule ^(.*)/$ iphone/redirect.php?f=$1/index\.html [L]
+RewriteCond %{HTTP_USER_AGENT} (iPhone|iPod|Android.*Mobile|Windows.*Phone|BlackBerry)
+RewriteRule ^(.*)$ iphone/$1 [L]
+
+RewriteCond %{HTTP:Accept-Encoding} gzip
+RewriteCond %{REQUEST_FILENAME}\.gz -s
+RewriteRule .+ %{REQUEST_URI}.gz
+
+<FilesMatch "\.css\.gz$">
+        ForceType text/css;charset=Shift_JIS
+        AddEncoding x-gzip .gz
+</FilesMatch>
+<FilesMatch "\.js\.gz$">
+        ForceType text/javascript;charset=UTF-8
+        AddEncoding x-gzip .gz
+</FilesMatch>
